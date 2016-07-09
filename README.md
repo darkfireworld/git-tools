@@ -3,7 +3,7 @@
 ## 安装步骤
 
 1. 运行`mvn package`
-2. 提取`java-git-tools.jar` 到新建的`git-tools/`中
+2. 提取`git-tools.jar` 到新建的`git-tools/`中
 3. 创建`git-tools.bat`
 
 bat文件基本格式为：
