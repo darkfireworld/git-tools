@@ -101,7 +101,7 @@ public class GitTools {
 
                 @Override
                 public String help() {
-                    return String.format("%s -> 遍历当前目录下所有目录，为空文件夹添加 %s", CMD_NAME, KEEP_FILE_NAME);
+                    return String.format("%s -> 为空文件夹添加 %s", CMD_NAME, KEEP_FILE_NAME);
                 }
             });
         }
@@ -121,7 +121,27 @@ public class GitTools {
                 @Override
                 public void todo(String[] option) {
                     //是否进行fetch操作
-                    boolean fetch = option.length > 0 && "fetch".equalsIgnoreCase(option[0]);
+                    boolean fetch = false;
+                    int offset = 0;
+                    int limit = Integer.MAX_VALUE;
+                    //解析参数
+                    {
+                        if (option.length > 0) {
+                            fetch = "fetch".equalsIgnoreCase(option[0]);
+                        }
+                        if (option.length > 1) {
+                            offset = Integer.parseInt(option[1]);
+                            if (offset < 0) {
+                                offset = 0;
+                            }
+                        }
+                        if (option.length > 2) {
+                            limit = Integer.parseInt(option[2]);
+                            if (limit < 0) {
+                                limit = Integer.MAX_VALUE;
+                            }
+                        }
+                    }
                     Map<String, Object> executeMap = new LinkedHashMap<String, Object>();
                     //需要检测的目录
                     List<File> repoDirList = new LinkedList<File>();
@@ -149,7 +169,13 @@ public class GitTools {
                         }
                     }
                     //遍历当前目录下，所有的子目录，如果该子目录为git仓库(包含.git/)，则同步
+                    int index = -1;
                     for (File file : repoDirList) {
+                        index++;
+                        //如果不在指定的区间内，则跳过。
+                        if (index < offset || index >= (offset + limit)) {
+                            continue;
+                        }
                         //同步
                         try {
                             boolean res = check(file, fetch);
@@ -373,7 +399,10 @@ public class GitTools {
 
                 @Override
                 public String help() {
-                    return String.format("%s [fetch]-> 遍历当前目录下所有子目录，检测是否存在dirty的git仓库，fetch会进行同步远程分支", CMD_NAME);
+                    StringBuilder sb = new StringBuilder();
+                    sb.append(String.format("%s [ [fetch] [offset] [limit] ] ->检测是否存在dirty的git仓库\n", CMD_NAME));
+                    sb.append("          [ [fetch] [offset] [limit] ] 同步远程repo，并且可以指定偏移和限制数量\n");
+                    return sb.toString();
                 }
 
             });
