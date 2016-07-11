@@ -304,14 +304,16 @@ public class GitTools {
                             for (String line : log.split("\\n")) {
                                 String[] segment = line.split("\\s");
                                 String objectId = segment[0];
-                                // /refs/heads/master | /refs/remote/origin/HEAD | /refs/remote/origin/master
+                                // /refs/heads/master | /refs/remote/origin/HEAD | /refs/remote/origin/master | /refs/tags/tag-v3.3.3
                                 String[] ref = segment[1].split("/");
-                                String refRepoName = ref[ref.length - 2];
-                                String refBranchName = ref[ref.length - 1];
-                                //跳过标签
-                                if ("tag".equalsIgnoreCase(refRepoName)) {
+
+                                //只有位于heads | remotes 类型的，才进行对比
+                                if (!"remotes".equalsIgnoreCase(ref[1]) && !"heads".equalsIgnoreCase(ref[1])) {
                                     continue;
                                 }
+                                String refRepoName = ref[ref.length - 2];
+                                String refBranchName = ref[ref.length - 1];
+
                                 //跳过特殊branch
                                 if ("HEAD".equalsIgnoreCase(refBranchName)) {
                                     continue;
