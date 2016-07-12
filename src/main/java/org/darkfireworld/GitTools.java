@@ -112,7 +112,9 @@ public class GitTools {
                 final String CMD_NAME = "check";
                 //分隔符
                 final String SEP_LINE = "-----------------------------------------------------";
-
+				//默认LIMIT
+				final int LIMIT = 1024;
+				
                 @Override
                 public String cmd() {
                     return CMD_NAME;
@@ -123,7 +125,7 @@ public class GitTools {
                     //是否进行fetch操作
                     boolean fetch = false;
                     int offset = 0;
-                    int limit = Integer.MAX_VALUE;
+                    int limit = LIMIT;
                     //解析参数
                     {
                         if (option.length > 0) {
@@ -138,7 +140,7 @@ public class GitTools {
                         if (option.length > 2) {
                             limit = Integer.parseInt(option[2]);
                             if (limit < 0) {
-                                limit = Integer.MAX_VALUE;
+                                limit = LIMIT;
                             }
                         }
                     }
