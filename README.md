@@ -20,5 +20,5 @@ java -cp %~DP0git-tools-1.0-SNAPSHOT.jar org.darkfireworld.GitTools %1 %2 %3 %4 
 
 ## 测试环境
 
-1. git version 2.9.0.windows.1
+1. git version 2.10.1.windows.1
 2. jdk 8.0
