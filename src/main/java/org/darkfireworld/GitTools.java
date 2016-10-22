@@ -255,7 +255,7 @@ public class GitTools {
                     {
                         //status
                         String log = call(repoDir, "STATUS", new String[]{"git", "status"});
-                        boolean isClean = log.matches("[\\s\\S]*working directory clean[\\s\\S]*");
+                        boolean isClean = log.matches("[\\s\\S]*working tree clean[\\s\\S]*");
                         //如果不干净，则直接返回
                         if (!isClean) {
                             return false;
